@@ -1,0 +1,45 @@
+
+
+body {
+    font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
+    font-size: 100%;
+    width:500px;
+}
+#status {
+    /* avoid an excessively wide status text */
+    white-space: pre;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 400px;
+    min-width: 400px;
+}
+
+
+th{
+    text-align: left;
+}
+td{
+    font-size: 14px;
+
+}
+a{
+    text-decoration: none;
+    color: #333;
+}
+a:hover{
+    color: blue;
+    text-decoration: underline;
+}
+
+
+.login{
+    color:blue;
+    text-decoration: underline;
+}
+.instance-name{
+    width:350px;
+}
+.jenkins-tab{
+    text-align: center;
+}
+

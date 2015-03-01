@@ -1,0 +1,19 @@
+{
+  "name": "eod-browser",
+  "version": "0.0.0",
+  "authors": [
+    "Ronan Clarke <ronanclarke@gmail.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "underscore": "~1.8.2"
+  }
+}
