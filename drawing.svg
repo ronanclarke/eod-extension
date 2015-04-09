@@ -55,18 +55,18 @@
     <rect
        style="fill:#41bef1;fill-opacity:1;stroke:none;stroke-opacity:1"
        id="rect3344"
-       width="19"
-       height="19"
+       width="128"
+       height="128"
        x="51.42857"
-       y="92.362206"
-       ry="2.582969"
+       y="-16.637794"
+       ry="17.401054"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:30.58044243px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:0.86347717px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="61.479416"
-       y="90.478828"
+       style="font-style:normal;font-weight:normal;font-size:206.01560974px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:5.81710911px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="69.044388"
+       y="63.404171"
        id="text4146"
        sodipodi:linespacing="125%"
        transform="scale(0.85485253,1.1697924)"
@@ -74,8 +74,8 @@
        inkscape:export-ydpi="90"><tspan
          sodipodi:role="line"
          id="tspan4148"
-         x="61.479416"
-         y="90.478828"
-         style="font-size:9.5563879px;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:0.86347717px;stroke-opacity:1">EoD</tspan></text>
+         x="69.044388"
+         y="63.404171"
+         style="font-size:64.37987518px;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:5.81710911px;stroke-opacity:1">EoD</tspan></text>
   </g>
 </svg>

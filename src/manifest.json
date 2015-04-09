@@ -3,7 +3,7 @@
 
   "name": "EoD Browser",
   "description": "This gives you some shortcuts for WhatClinic EoD instances",
-  "version": "0.3",
+  "version": "0.5.1",
 
   "browser_action": {
     "default_icon": "icon.png",
