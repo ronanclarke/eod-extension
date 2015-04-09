@@ -20,21 +20,39 @@ function buildHTMLfromViews(views) {
 
     var ignoreList = [
         "https://jenkins.whatclinic.net/",
-        "https://jenkins.whatclinic.net/view/Automation/",
+        "https://jenkins.whatclinic.net/view/All/",
         "https://jenkins.whatclinic.net/view/ENV/",
         "https://jenkins.whatclinic.net/view/ENV%20eod/",
-        "https://jenkins.whatclinic.net/view/ENV%20eod/",
-        "https://jenkins.whatclinic.net/view/ENV%20image/"
+        "https://jenkins.whatclinic.net/view/Varnish/",
+        "https://jenkins.whatclinic.net/view/ENV%20local-db/",
+        "https://jenkins.whatclinic.net/view/ENV%20report-db/",
+        "https://jenkins.whatclinic.net/view/ENV%20image/",
+        "https://jenkins.whatclinic.net/view/_PROD/",
+        "https://jenkins.whatclinic.net/view/_ci/"
     ];
 
 
     sHTML += "<thead><th>Instance</th><th>Jenkins Tab</th></thead>";
     sHTML += "<tbody>";
+  sHTML += "<tr><td class=\"groupHead\" colspan='2'>EoD </td> ";
+
+    var envPattern = "https://jenkins.whatclinic.net/view/ENV%20";
+    var separatorAdded = false;
     _.each(views, function (view) {
 
 
         if (!_.contains(ignoreList, view.url)) {
-            var label = view.url.replace("https://jenkins.whatclinic.net/view/ENV%20", "").replace("/", "");
+
+          var label = "";
+            if(view.url.indexOf(envPattern) > -1){
+              label = view.url.replace(envPattern, "").replace("/", "");
+            }else{
+              if(!separatorAdded){
+                sHTML += "<tr><td class=\"groupHead\" colspan='2'>Fixed </td> ";
+                separatorAdded = true;
+              }
+              label = view.url.replace("https://jenkins.whatclinic.net/view/_", "").replace("/", "");
+            }
 
             sHTML += "<tr>";
             sHTML += '<td class="instance-name"><a href="http://' + label + '.eod.whatclinic.net" target="_blank">' + label + "</a></td>"
@@ -44,7 +62,7 @@ function buildHTMLfromViews(views) {
 
     });
 
-    sHTML += "<tr><td colspan='2'>----------------------------</td> ";
+    sHTML += "<tr><td class=\"groupHead\" colspan='2'>Legacy </td> ";
 
     sHTML += "<tr>";
     sHTML += '<td class="instance-name"><a href="http://no-cache.en.staging.varnish.whatclinic.com" target="_blank">Staging</a></td>'

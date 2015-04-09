@@ -4,6 +4,7 @@ body {
     font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
     font-size: 100%;
     width:500px;
+    color: #333;
 }
 #status {
     /* avoid an excessively wide status text */
@@ -22,6 +23,9 @@ td{
     font-size: 14px;
 
 }
+tr:hover{
+    background: #eee;
+}
 a{
     text-decoration: none;
     color: #333;
@@ -36,8 +40,18 @@ a:hover{
     color:blue;
     text-decoration: underline;
 }
+.instance-name a{
+    padding-left: 20px;
+}
+.groupHead{
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #999;
+    color: #999;
+}
 .instance-name{
     width:350px;
+
 }
 .jenkins-tab{
     text-align: center;
