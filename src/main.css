@@ -2,37 +2,73 @@
 body {
     font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
     font-size: 100%;
-    width: 900px;
+    width: 800px;
     color: #333;
+
 }
-td{
-    padding: 6px 10px;
+
+.instance-name {
+    width: 220px;
+    font-size: 12px;
 }
-.info-col{
-    width:75px;
+
+.jenkins-tab {
+    text-align: center;
+}
+
+td {
+    padding: 6px 6px;
+
+}
+
+td.spacer {
+    padding: 0px 0px;
+}
+
+.info-col {
+    width: 90px;
     color: white;
     text-align: center;
     background-color: white;
 }
-.info-col.failure{
+
+.instance-name a {
+    padding-left: 0px;
+}
+.info-col.git-status{
+    color: #333333;
+    font-size: 12px !important;
+    width: 25px;
+}
+.info-col.failure {
+    text-align: left;
     background-color: orangered;
 }
-.info-col.none{
-    color: black;
+
+.info-col.none {
+    text-align: center;
+    color: #999;
 }
-.info-col.aborted{
+
+.info-col.aborted {
+    text-align: left;
     background-color: orangered;
 }
-.info-col.unstable{
+
+.info-col.unstable {
+    text-align: left;
     background-color: orange;
 }
 
-.info-col.success{
+.info-col.success {
+    text-align: left;
     background-color: lightgreen;
 }
-.info-col i{
+
+.info-col i {
     /*color:white;*/
 }
+
 .fa-check {
     color: white
 }
@@ -44,16 +80,27 @@ td{
 .fa-user-times {
     color: white
 }
-.time-ago{
-    font-size: 10px;
+
+.time-ago {
+    margin-left: 6px;
+    font-size: 12px;
 }
 
-#log {
-    font-size: 10px;
-    min-width: 500px;
-    height: 500px;
-    background: lightblue;
-    float: left;
+.groupHead {
+    font-size: 12px !important;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #999;
+    color: #999;
+}
+
+.groupHead.centered {
+    font-size: 12px !important;
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #999;
+    color: #999;
 }
 
 #status {
@@ -63,6 +110,10 @@ td{
     overflow: hidden;
     max-width: 400px;
     min-width: 400px;
+}
+
+th.centered {
+    text-align: center;
 }
 
 th {
@@ -93,10 +144,6 @@ a:hover {
     text-decoration: underline;
 }
 
-.instance-name a {
-    padding-left: 20px;
-}
-
 .groupHead {
     padding-top: 5px;
     padding-bottom: 5px;
@@ -104,12 +151,5 @@ a:hover {
     color: #999;
 }
 
-.instance-name {
-    width: 350px;
 
-}
-
-.jenkins-tab {
-    text-align: center;
-}
 

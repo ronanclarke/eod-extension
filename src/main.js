@@ -34,9 +34,24 @@ function buildHTMLfromViews(views) {
     ];
 
 
-    sHTML += "<thead><th>Instance</th><th>IIS</th><th>CRM</th><th>Integration</th><th>Regression</th><th>Jenkins Tab</th></thead>";
-    sHTML += "<tbody>";
-    sHTML += "<tr><td class=\"groupHead\" colspan='2'>EoD </td> ";
+    sHTML += "<thead>";
+    sHTML += "<th>Instance</th>";
+    sHTML += "<th class='centered'>&nbsp;</th>" ;
+    sHTML += "<th class='centered'>&nbsp;</th>" ;
+    sHTML += "<th></th><th class='centered' colspan='2'> Builds</th>";
+    sHTML += "<th></th><th class='centered' colspan='2'>Tests</th>";
+    sHTML += "</thead>";
+
+    sHTML += "<tbody><tr>";
+    sHTML += "<td class=\"groupHead\" colspan='1'>EoD </td>";
+    sHTML += "<td class=\"groupHead centered\" colspan='3'>Built commit</td>" ;
+    //sHTML += "<td>&nbsp;</td>" ;
+    sHTML += "<td class='groupHead centered'>IIS</td>";
+    sHTML += "<td  class='groupHead centered'>CRM</td> ";
+    sHTML += "<td>&nbsp;</td>";
+    sHTML += "<td class='groupHead centered'>Integration</td>";
+    sHTML += "<td  class='groupHead centered'>Regression</td>";
+    sHTML += "</tr> ";
 
     var envPattern = "https://jenkins.whatclinic.net/view/ENV%20";
     var separatorAdded = false;
@@ -57,15 +72,16 @@ function buildHTMLfromViews(views) {
             }
 
             sHTML += "<tr>";
-            sHTML += '<td class="instance-name"><a href="http://' + label + '.eod.whatclinic.net" target="_blank">' + label + "</a></td>";
+            sHTML += '<td class="instance-name"><a title="Visit site" href="http://' + label + '.eod.whatclinic.net" target="_blank">' + label + "</a></td>";
 
+            sHTML += '<td class="jenkins-tab"><a title="View Jenkins Page" href="' + view.url + '" target="_blank"><image alt="' + label + '" src="jenkins.png"/></a></td>';
+            sHTML += '<td class="info-col git-status" id="' + label + '"></td>';
+            sHTML += '<td class="spacer"></td>';
             sHTML += '<td class="info-col iis-last-run" id="' + label + '"><a href="' + view.url + '" target="_blank"><i class="fa fa-spinner fa-spin"></i></td>';
             sHTML += '<td class="info-col crm-last-run" id="' + label + '"><a href="' + view.url + '" target="_blank"><i class="fa fa-spinner fa-spin"></td>';
-
+            sHTML += '<td class="spacer"></td>';
             sHTML += '<td class="info-col integration-last-run" id="' + label + '"><a href="' + view.url + '" target="_blank"><i class="fa fa-spinner fa-spin"></td>';
             sHTML += '<td class="info-col regression-last-run" id="' + label + '"><a href="' + view.url + '" target="_blank"><i class="fa fa-spinner fa-spin"></td>';
-
-            sHTML += '<td class="jenkins-tab"><a href="' + view.url + '" target="_blank"><image alt="' + label + '" src="jenkins.png"/></a></td>';
 
 
             getJobRun('iis', view.url, label)
@@ -78,19 +94,6 @@ function buildHTMLfromViews(views) {
         }
 
     });
-
-    //sHTML += "<tr><td class=\"groupHead\" colspan='2'>Legacy </td> ";
-    //
-    //sHTML += "<tr>";
-    //sHTML += '<td class="instance-name"><a href="http://no-cache.en.staging.varnish.whatclinic.com" target="_blank">Staging</a></td>'
-    //sHTML += '<td class="jenkins-tab"><a href="https://eng.whatclinic.com/jenkins/view/Eng%20Staging/" target="_blank"><image src="jenkins.png"/></a></td>';
-    //sHTML += "</tr>"
-    //
-    //sHTML += "<tr>";
-    //sHTML += '<td class="instance-name"><a href="http://no-cache.en.dev.varnish.whatclinic.com" target="_blank">Dev</a></td>'
-    //sHTML += '<td class="jenkins-tab"><a href="https://eng.whatclinic.com/jenkins/view/Eng%20Dev/" target="_blank"><image src="jenkins.png"/></a></td>';
-    //sHTML += "</tr>"
-
 
     sHTML += "</tbody></table>";
 
@@ -115,7 +118,7 @@ function getJobRun(jobType, baseUrl, label) {
             for (i = 0; i < response.jobs.length - 1; i++) {
                 var jobName = response.jobs[i].url
                 if (jobName.indexOf(jobType) > -1) {
-                    getLastJobRun(jobType, jobName, label)
+                    getDetailsForJobRun(jobType, jobName, label)
                     break;
                 }
             }
@@ -125,27 +128,8 @@ function getJobRun(jobType, baseUrl, label) {
 
 }
 
-function getLastJobRun(jobType, jobName, label) {
-
-    var jsonUrl = jobName + "api/json";
-    console.log("start getDetailsForJob()")
-    $.ajax({
-
-        url: jsonUrl,
-        success: function (response) {
-            if (!response || !response.builds || response.builds.length < 1) {
-                markAsBlank(jobType, label)
-                return;
-            }
-            console.log("finishing getDetailsForJob() " + response.builds.length)
-
-            getDetailsForJobRun(jobType, response.builds[0].url, label);
-        }
-    });
-}
-
 function getDetailsForJobRun(jobType, jobName, label) {
-    var url = jobName + "api/json"
+    var url = jobName + "lastBuild/api/json"
     $.ajax({
         url: url,
         success: function (response) {
@@ -166,22 +150,68 @@ function getDetailsForJobRun(jobType, jobName, label) {
                 markAsBlank(jobType, label)
                 return;
             }
+
+
             // get the timeago string
             var timeCompleted = moment(response.timestamp);
-            var timeAgo = timeCompleted.from(moment());
+            var timeAgo = timeCompleted.from(moment()).replace(/ago/, "");
+            icon = "fa-laptop"
 
-            var sHTML = '<i class="fa ' + icon + '"></i><span class="time-ago">' + timeAgo + '</span>';
+
+            var sha1 = "";
+            var branchName = "";
+            _.each(response.actions, function (action) {
+                if (action["lastBuiltRevision"]) {
+                    sha1 = action.lastBuiltRevision.SHA1;
+                    var branch = _.last(action.lastBuiltRevision.branch).name
+                    branchName = _.last(branch.split(/\//));
+                }
+            });
+
+
+            var culprits = "";
+            var cupritsArray = []
+            _.each(response.culprits, function (culprit) {
+                cupritsArray.push(culprit.fullName);
+            })
+
+            culprits = cupritsArray.join(",")
+
+            var info = '\nCompleted at ' + timeCompleted.format('ddd MMM Do YYYY, HH:mm:ss');
+            info += "\nStatus: " + result;
+            info += "\nLast Commit: " + sha1.substring(0, 6);
+            if (culprits.length > 0)
+                info += "\nChanges By: " + culprits;
+
+
+            //https://eng.whatclinic.com/git/src/iis.git/commit/?h=banned-words&id=fe74dd5bd65ff91c4a23849e570cbf644ca7ea6d
+            var hrefSummary = jobName + ""
+            var hrefConsole = jobName + "lastBuild/console"
+
+            var titleSummary = 'View Job Summary' + info;
+            var titleConsole = 'View Log' + info;
+
+            var sHTML = '<a title="' + titleConsole + '" href="' + hrefConsole + '" target="_blank"><i class="fa ' + icon + '"></i><a title="' + titleSummary + '" target="_blank"href="' + hrefSummary + '"><span class="time-ago">' + timeAgo + '</span></a>';
 
             $("." + jobType + "-last-run#" + label).first().html(sHTML).addClass(result.toLowerCase());
 
-            console.log(result + ":" + timeCompleted)
+            if(jobType == "iis" && sha1){
+                var gitHTML =  '<a target="_blank" href="https://eng.whatclinic.com/git/src/iis.git/commit/?h=' + branchName + '&id=' + sha1 + '">' + sha1.substring(0, 6) + "</a>";
+                $(".git-status#" + label).first().html(gitHTML);
+            }
+
+
+        },
+        error: function (response) {
+            markAsBlank(jobType, label);
+            return;
         }
     })
 }
 
 function markAsBlank(jobType, label) {
     console.log("mark as blank" + jobType, label);
-    var sHTML = "-";
+    var sHTML = "Never";
     $("." + jobType + "-last-run#" + label).first().html(sHTML).addClass("none");
 }
 
