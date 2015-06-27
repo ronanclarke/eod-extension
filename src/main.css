@@ -5,17 +5,44 @@ body {
     width: 900px;
     color: #333;
 }
+td{
+    padding: 6px 10px;
+}
+.info-col{
+    width:75px;
+    color: white;
+    text-align: center;
+    background-color: white;
+}
+.info-col.failure{
+    background-color: orangered;
+}
+.info-col.none{
+    color: black;
+}
+.info-col.aborted{
+    background-color: orangered;
+}
+.info-col.unstable{
+    background-color: orange;
+}
 
+.info-col.success{
+    background-color: lightgreen;
+}
+.info-col i{
+    /*color:white;*/
+}
 .fa-check {
-    color: green
+    color: white
 }
 
 .fa-times {
-    color: red
+    color: white
 }
 
 .fa-user-times {
-    color: orange
+    color: white
 }
 .time-ago{
     font-size: 10px;

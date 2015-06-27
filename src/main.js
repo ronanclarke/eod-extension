@@ -59,18 +59,21 @@ function buildHTMLfromViews(views) {
             sHTML += "<tr>";
             sHTML += '<td class="instance-name"><a href="http://' + label + '.eod.whatclinic.net" target="_blank">' + label + "</a></td>";
 
-            sHTML += '<td class="iis-last-run" id="' + label + '"><a href="' + view.url + '" target="_blank">-</td>';
-            sHTML += '<td class="crm-last-run" id="' + label + '"><a href="' + view.url + '" target="_blank">-</td>';
+            sHTML += '<td class="info-col iis-last-run" id="' + label + '"><a href="' + view.url + '" target="_blank"><i class="fa fa-spinner fa-spin"></i></td>';
+            sHTML += '<td class="info-col crm-last-run" id="' + label + '"><a href="' + view.url + '" target="_blank"><i class="fa fa-spinner fa-spin"></td>';
 
-            sHTML += '<td class="integration-last-run" id="' + label + '"><a href="' + view.url + '" target="_blank">-</td>';
-            sHTML += '<td class="regression-last-run" id="' + label + '"><a href="' + view.url + '" target="_blank">-</td>';
+            sHTML += '<td class="info-col integration-last-run" id="' + label + '"><a href="' + view.url + '" target="_blank"><i class="fa fa-spinner fa-spin"></td>';
+            sHTML += '<td class="info-col regression-last-run" id="' + label + '"><a href="' + view.url + '" target="_blank"><i class="fa fa-spinner fa-spin"></td>';
 
             sHTML += '<td class="jenkins-tab"><a href="' + view.url + '" target="_blank"><image alt="' + label + '" src="jenkins.png"/></a></td>';
+
 
             getJobRun('iis', view.url, label)
             getJobRun('crm', view.url, label)
             getJobRun('regression', view.url, label)
             getJobRun('integration', view.url, label)
+
+
             sHTML += "</tr>"
         }
 
@@ -97,19 +100,23 @@ function buildHTMLfromViews(views) {
 
 function getJobRun(jobType, baseUrl, label) {
 
-    var jsonUrl = baseUrl + "api/json?pretty=true";
+    var jsonUrl = baseUrl + "api/json";
 
 
     $.ajax({
         url: jsonUrl,
         success: function (response) {
-            if (!response || !response.jobs)
+
+            if (!response || !response.jobs) {
+                markAsBlank(jobType, label)
                 return;
+            }
 
             for (i = 0; i < response.jobs.length - 1; i++) {
                 var jobName = response.jobs[i].url
                 if (jobName.indexOf(jobType) > -1) {
                     getLastJobRun(jobType, jobName, label)
+                    break;
                 }
             }
         }
@@ -120,20 +127,24 @@ function getJobRun(jobType, baseUrl, label) {
 
 function getLastJobRun(jobType, jobName, label) {
 
-    var jsonUrl = jobName + "api/json?pretty=true";
-
+    var jsonUrl = jobName + "api/json";
+    console.log("start getDetailsForJob()")
     $.ajax({
+
         url: jsonUrl,
         success: function (response) {
-            if (!response || !response.builds || response.builds.length < 1)
+            if (!response || !response.builds || response.builds.length < 1) {
+                markAsBlank(jobType, label)
                 return;
+            }
+            console.log("finishing getDetailsForJob() " + response.builds.length)
 
-            getDetailsForJob(jobType, response.builds[0].url, label);
+            getDetailsForJobRun(jobType, response.builds[0].url, label);
         }
     });
 }
 
-function getDetailsForJob(jobType, jobName, label) {
+function getDetailsForJobRun(jobType, jobName, label) {
     var url = jobName + "api/json"
     $.ajax({
         url: url,
@@ -145,22 +156,33 @@ function getDetailsForJob(jobType, jobName, label) {
             var result = response.result;
             var icons = {
                 "SUCCESS": "fa-check",
+                "UNSTABLE": "fa-check",
                 "ABORTED": "fa-user-times",
                 "FAILURE": "fa-times"
             }
-            var icon = icons[result];
 
+            var icon = icons[result];
+            if (!result) {
+                markAsBlank(jobType, label)
+                return;
+            }
             // get the timeago string
             var timeCompleted = moment(response.timestamp);
             var timeAgo = timeCompleted.from(moment());
 
             var sHTML = '<i class="fa ' + icon + '"></i><span class="time-ago">' + timeAgo + '</span>';
 
-            $("." + jobType + "-last-run#" + label).first().html(sHTML);
+            $("." + jobType + "-last-run#" + label).first().html(sHTML).addClass(result.toLowerCase());
 
             console.log(result + ":" + timeCompleted)
         }
     })
+}
+
+function markAsBlank(jobType, label) {
+    console.log("mark as blank" + jobType, label);
+    var sHTML = "-";
+    $("." + jobType + "-last-run#" + label).first().html(sHTML).addClass("none");
 }
 
 
