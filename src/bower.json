@@ -14,7 +14,8 @@
     "tests"
   ],
   "dependencies": {
-    "jQuery":*."
-    "underscore": "~1.8.2"
+    "jQuery": "*.*",
+    "underscore": "~1.8.2",
+    "moment": "~2.10.3"
   }
 }
