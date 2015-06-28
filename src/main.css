@@ -7,6 +7,35 @@ body {
 
 }
 
+#legend{
+    width: 500px;
+    position: relative;
+    text-align: right;
+    float: right;
+    margin-right: 30px;
+}
+.legend{
+    margin-left: 5px;
+    display: inline;
+    font-size: 10px;
+    width: 100%;
+}
+.box{
+    margin-left: 10px;
+    margin-top: 5px;
+    display: inline-block;
+    width:10px;
+    height: 10px;
+}
+.box.green {
+    background-color: lightgreen;
+}
+.box.red{
+    background-color: red;
+}
+.box.orange{
+    background-color: orange;
+}
 .instance-name {
     width: 220px;
     font-size: 12px;
@@ -125,9 +154,12 @@ td {
 
 }
 
-tr:hover {
+tr.instance-row:hover {
     background: #eee;
+    text-decoration: underline;
+    color: blue !important;
 }
+
 
 a {
     text-decoration: none;

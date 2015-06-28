@@ -71,7 +71,7 @@ function buildHTMLfromViews(views) {
                 label = view.url.replace("https://jenkins.whatclinic.net/view/_", "").replace("/", "");
             }
 
-            sHTML += "<tr>";
+            sHTML += '<tr class="instance-row">';
             sHTML += '<td class="instance-name"><a title="Visit site" href="http://' + label + '.eod.whatclinic.net" target="_blank">' + label + "</a></td>";
 
             sHTML += '<td class="jenkins-tab"><a title="View Jenkins Page" href="' + view.url + '" target="_blank"><image alt="' + label + '" src="jenkins.png"/></a></td>';
