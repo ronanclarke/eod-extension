@@ -3,7 +3,7 @@
 
   "name": "EoD Browser",
   "description": "This gives you some shortcuts for WhatClinic EoD instances and provides some info on current jobs status",
-  "version": "0.5.3",
+  "version": "0.5.4",
 
   "browser_action": {
     "default_icon": "icon.png",
