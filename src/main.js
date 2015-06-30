@@ -26,6 +26,7 @@ function buildHTMLfromViews(views) {
     "https://jenkins.whatclinic.net/view/Varnish/",
     "https://jenkins.whatclinic.net/view/_local-db/",
     "https://jenkins.whatclinic.net/view/ENV%20image/",
+    "https://jenkins.whatclinic.net/view/ENV%20Job%20Templates/",
     "https://jenkins.whatclinic.net/view/_PROD/",
     "https://jenkins.whatclinic.net/view/_ci/",
     "https://jenkins.whatclinic.net/view/_report-db/",
