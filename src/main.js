@@ -27,10 +27,13 @@ function buildHTMLfromViews(views) {
     "https://jenkins.whatclinic.net/view/_local-db/",
     "https://jenkins.whatclinic.net/view/ENV%20image/",
     "https://jenkins.whatclinic.net/view/ENV%20Job%20Templates/",
+    "https://jenkins.whatclinic.net/view/Job%20Templates/",
     "https://jenkins.whatclinic.net/view/_PROD/",
     "https://jenkins.whatclinic.net/view/_ci/",
     "https://jenkins.whatclinic.net/view/_report-db/",
     "https://jenkins.whatclinic.net/view/_dev/",
+    "https://jenkins.whatclinic.net/view/Data%20Store/",
+    "https://jenkins.whatclinic.net/view/Git/",
     "https://jenkins.whatclinic.net/view/Env%20dashboard/"
   ];
 
