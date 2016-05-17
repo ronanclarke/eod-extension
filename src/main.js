@@ -34,7 +34,9 @@ function buildHTMLfromViews(views) {
     "https://jenkins.whatclinic.net/view/_dev/",
     "https://jenkins.whatclinic.net/view/Data%20Store/",
     "https://jenkins.whatclinic.net/view/Git/",
-    "https://jenkins.whatclinic.net/view/Env%20dashboard/"
+    "https://jenkins.whatclinic.net/view/Env%20dashboard/",
+    "https://jenkins.whatclinic.net/view/WebPagetest/",
+    "https://jenkins.whatclinic.net/view/Availability%20HUB/"
   ];
 
 
@@ -53,8 +55,8 @@ function buildHTMLfromViews(views) {
   sHTML += "<td class='groupHead centered'>IIS</td>";
   sHTML += "<td  class='groupHead centered'>CRM</td> ";
   sHTML += "<td>&nbsp;</td>";
-  sHTML += "<td class='groupHead centered'>Integration</td>";
-  sHTML += "<td  class='groupHead centered'>Regression</td>";
+  sHTML += "<td class='groupHead centered'>Smoke</td>";
+  sHTML += "<td  class='groupHead centered'>Acceptance</td>";
   sHTML += "</tr> ";
 
   var envPattern = "https://jenkins.whatclinic.net/view/ENV%20";
@@ -84,14 +86,14 @@ function buildHTMLfromViews(views) {
       sHTML += '<td class="info-col iis-last-run" id="' + label + '"><a href="' + view.url + '" target="_blank"><i class="fa fa-spinner fa-spin"></i></td>';
       sHTML += '<td class="info-col crm-last-run" id="' + label + '"><a href="' + view.url + '" target="_blank"><i class="fa fa-spinner fa-spin"></td>';
       sHTML += '<td class="spacer"></td>';
-      sHTML += '<td class="info-col integration-last-run" id="' + label + '"><a href="' + view.url + '" target="_blank"><i class="fa fa-spinner fa-spin"></td>';
-      sHTML += '<td class="info-col regression-last-run" id="' + label + '"><a href="' + view.url + '" target="_blank"><i class="fa fa-spinner fa-spin"></td>';
+      sHTML += '<td class="info-col smoke-tests-last-run" id="' + label + '"><a href="' + view.url + '" target="_blank"><i class="fa fa-spinner fa-spin"></td>';
+      sHTML += '<td class="info-col acceptance-tests-last-run" id="' + label + '"><a href="' + view.url + '" target="_blank"><i class="fa fa-spinner fa-spin"></td>';
 
 
       getJobRun('iis', view.url, label)
       getJobRun('crm', view.url, label)
-      getJobRun('regression', view.url, label)
-      getJobRun('integration', view.url, label)
+      getJobRun('smoke-tests', view.url, label)
+      getJobRun('acceptance-tests', view.url, label)
 
 
       sHTML += "</tr>"
@@ -113,19 +115,27 @@ function getJobRun(jobType, baseUrl, label) {
     url: jsonUrl,
     success: function (response) {
 
+      if(jobType == "acceptance-tests")
+        console.log(jobType ,response)
+
       if (!response || !response.jobs) {
         markAsBlank(jobType, label)
         return;
       }
-
+      var jobFound = false;
       for (i = 0; i < response.jobs.length - 1; i++) {
         var jobName = response.jobs[i].url
         if (jobName.indexOf(jobType) > -1) {
-          getDetailsForJobRun(jobType, jobName, label)
+          getDetailsForJobRun(jobType, jobName, label);
+          jobFound = true;
           break;
         }
       }
+
+      if(!jobFound)
+        markAsBlank(jobType, label);
     }
+
   });
 
 
@@ -134,13 +144,11 @@ function getJobRun(jobType, baseUrl, label) {
 function getDetailsForJobRun(jobType, jobName, label) {
   var url = jobName + "lastBuild/api/json"
 
-
   $.ajax({
     url: url,
     success: function (response) {
       if (!response)
         return;
-
 
       // calc the result and what icon to show
       var result = response.result;
@@ -238,6 +246,7 @@ function getDetailsForJobRun(jobType, jobName, label) {
 }
 function markAsBlank(jobType, label) {
   var sHTML = "Never";
+
   $("." + jobType + "-last-run#" + label).first().html(sHTML).addClass("none");
 }
 
