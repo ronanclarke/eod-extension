@@ -36,7 +36,9 @@ function buildHTMLfromViews(views) {
     "https://jenkins.whatclinic.net/view/Git/",
     "https://jenkins.whatclinic.net/view/Env%20dashboard/",
     "https://jenkins.whatclinic.net/view/WebPagetest/",
-    "https://jenkins.whatclinic.net/view/Availability%20HUB/"
+    "https://jenkins.whatclinic.net/view/Availability%20HUB/",
+    "https://jenkins.whatclinic.net/view/QA/"
+
   ];
 
 
